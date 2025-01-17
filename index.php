@@ -1,23 +1,23 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="icon" href="image/favicon.png" type="image/png">
-        <title>Azzaro Resorts & Spa</title>
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <link rel="stylesheet" href="vendors/linericon/style.css">
-        <link rel="stylesheet" href="css/font-awesome.min.css">
-        <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
-        <link rel="stylesheet" href="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
-        <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
-        <!-- main css -->
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/responsive.css">
-    </head>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="image/favicon.png" type="image/png">
+    <title>Azzaro Resorts & Spa</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="vendors/linericon/style.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css">
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="vendors/lightbox/simpleLightbox.css">
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
     <body>
         <!--================Header Area =================-->
         <header class="header_area">
@@ -44,17 +44,9 @@
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item active"><a class="nav-link" href="index.php">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="about.html">About us</a></li>
                             <li class="nav-item"><a class="nav-link" href="accomodation.html">Accomodation</a></li>
-                            <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                            <li class="nav-item submenu dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="blog-single.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="elements.html">Elemests</a></li>
+                            <li class="nav-item"><a class="nav-link" href="index.php#gallery">Gallery</a></li>
+                            
                             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                         </ul>
                     </div>
@@ -72,7 +64,7 @@
 						<h6>Away from the Ordinary</h6>
 						<h2>Indulge in Luxury</h2>
 						<p>Escape to Azzaro Resorts & Spa, where serene surroundings, world-class amenities, and unparalleled comfort come together to create a truly unforgettable experience. Rediscover tranquility and elevate your stay with us.</p>
-						<a href="#" class="btn theme_btn button_hover">Get Started</a>
+						<a href="accomodation.html" class="btn theme_btn button_hover">Get Started</a>
 					</div>
 				</div>
             </div>
@@ -129,7 +121,7 @@
                                         <div class="book_tabel_item">
                                             <div class="input-group">
                                                 <select class="wide">
-                                                    <option data-display="Child">Number of Rooms</option>
+                                                    <option data-display="Rooms">Number of Rooms</option>
                                                     <option value="1">Room 01</option>
                                                     <option value="2">Room 02</option>
                                                     <option value="3">Room 03</option>
@@ -203,6 +195,75 @@
             </div>
         </section>
         <!--================ Accomodation Area  =================-->
+
+        <!--================ Testimonial Area  =================-->
+<section class="testimonial_area section_gap">
+<div class="container">
+<div class="section_title text-center">
+    <h2 class="title_color">Testimonials from Our Guests</h2>
+    <p>Discover what our guests have to say about their exceptional experiences at Azzaro Resort & Spa.</p>
+</div>
+<div class="testimonial_slider owl-carousel">
+    <div class="media testimonial_item">
+        <img class="rounded-circle" src="image/testimonial-1.jpg" alt="Guest Photo">
+        <div class="media-body">
+            <p>"Our stay at Azzaro Resort & Spa was absolutely delightful. The staff, facilities, and ambience made our vacation unforgettable."</p>
+            <a href="#"><h4 class="sec_h4">Anna Williams</h4></a>
+            <div class="star">
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star-half-o"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="media testimonial_item">
+        <img class="rounded-circle" src="image/testimonial-2.jpg" alt="Guest Photo">
+        <div class="media-body">
+            <p>"The luxury of the rooms and the breathtaking views exceeded our expectations. We highly recommend Azzaro Resort for a truly pampered experience."</p>
+            <a href="#"><h4 class="sec_h4">James Anderson</h4></a>
+            <div class="star">
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star-half-o"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="media testimonial_item">
+        <img class="rounded-circle" src="image/testimonial-3.jpg" alt="Guest Photo">
+        <div class="media-body">
+            <p>"We were impressed by the exceptional service and attention to detail. Our family vacation at Azzaro Resort was memorable and relaxing."</p>
+            <a href="#"><h4 class="sec_h4">Sophia Martinez</h4></a>
+            <div class="star">
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star-o"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="media testimonial_item">
+        <img class="rounded-circle" src="image/testimonial-4.jpg" alt="Guest Photo">
+        <div class="media-body">
+            <p>"The serene environment and world-class amenities at Azzaro Resort make it a perfect destination for relaxation and rejuvenation."</p>
+            <a href="#"><h4 class="sec_h4">Liam Patel</h4></a>
+            <div class="star">
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star"></i></a>
+                <a href="#"><i class="fa fa-star-half-o"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+<!--================ Testimonial Area  =================-->
 
         <!--================ Facilities Area  =================-->
 <section class="facilities_area section_gap">
@@ -282,7 +343,7 @@
             <p>
                 Founded with a passion for excellence, Azzaro Resort & Spa has been dedicated to offering unparalleled luxury and personalized service. Our history is rooted in a commitment to innovation, sustainability, and guest satisfaction. As we embrace our rich heritage, our mission remains to create transformative experiences that blend serenity, style, and comfort. Our vision is to be a beacon of excellence in hospitality, inspiring guests with our unwavering dedication to quality and care.
             </p>
-            <a href="#" class="button_hover theme_btn_two">Discover More</a>
+            <!-- <a href="#" class="button_hover theme_btn_two">Discover More</a> -->
         </div>
     </div>
     <div class="col-md-6">
@@ -293,79 +354,250 @@
 </section>
 <!--================ About History Area  =================-->
 
+<!--================Breadcrumb Area =================-->
+<section class="gallery_area" id="gallery">
+            <div class="container">
+                <div class="section_title text-center">
+                    <h2 class="title_color">Hotel Gallery</h2>
+                    <p>Who are in extremely love with eco friendly system.</p>
+                </div>
+                <div class="row imageGallery1" id="gallery">
+                  <div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/banquet1.jpg" alt="Banquet">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/banquet1.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/bed1.jpg" alt="Bedroom">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/bed1.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/bed2.jpg" alt="Bedroom">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/bed2.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/bedroom1.jpg" alt="Bedroom">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/bedroom1.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/bedroom2.jpg" alt="Bedroom">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/bedroom2.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/bedroom3.jpg" alt="Bedroom">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/bedroom3.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/bedroom5.jpg" alt="Bedroom">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/bedroom5.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/lobby.jpg" alt="Lobby">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/lobby.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/lobby2.jpg" alt="Lobby">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/lobby2.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/outdoor1.jpg" alt="Outdoor">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/outdoor1.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/outdoor2.jpg" alt="Outdoor">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/outdoor2.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/outdoor3.jpg" alt="Outdoor">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/outdoor3.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/outdoor4.jpg" alt="Outdoor">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/outdoor4.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/outdoor5.jpg" alt="Outdoor">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/outdoor5.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/pool1.jpg" alt="Pool">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/pool1.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/pool2.jpg" alt="Pool">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/pool2.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/pool3.jpg" alt="Pool">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/pool3.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/reception1.jpg" alt="Reception">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/reception1.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 gallery_item">
+    <div class="gallery_img">
+        <img src="image/rooms/gallery/reception2.jpg" alt="Reception">
+        <div class="hover">
+            <a class="light" href="image/rooms/gallery/reception2.jpg"><i class="fa fa-expand"></i></a>
+        </div>
+    </div>
+</div>
 
-<!--================ Testimonial Area  =================-->
-<section class="testimonial_area section_gap">
-<div class="container">
-<div class="section_title text-center">
-    <h2 class="title_color">Testimonials from Our Guests</h2>
-    <p>Discover what our guests have to say about their exceptional experiences at Azzaro Resort & Spa.</p>
-</div>
-<div class="testimonial_slider owl-carousel">
-    <div class="media testimonial_item">
-        <img class="rounded-circle" src="image/testimonial-1.jpg" alt="Guest Photo">
-        <div class="media-body">
-            <p>"Our stay at Azzaro Resort & Spa was absolutely delightful. The staff, facilities, and ambience made our vacation unforgettable."</p>
-            <a href="#"><h4 class="sec_h4">Anna Williams</h4></a>
-            <div class="star">
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star-half-o"></i></a>
+
+                    <!-- <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/01.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/01.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/02.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/02.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/03.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/03.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/04.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/04.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/06.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/05.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/05.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/06.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/01-1.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/01-1.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/02-1.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/02-1.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 gallery_item">
+                        <div class="gallery_img">
+                            <img src="image/image/rooms/gallery/03-1.jpg" alt="">
+                            <div class="hover">
+                            	<a class="light" href="image/image/rooms/gallery/03-1.jpg"><i class="fa fa-expand"></i></a>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="media testimonial_item">
-        <img class="rounded-circle" src="image/testimonial-2.jpg" alt="Guest Photo">
-        <div class="media-body">
-            <p>"The luxury of the rooms and the breathtaking views exceeded our expectations. We highly recommend Azzaro Resort for a truly pampered experience."</p>
-            <a href="#"><h4 class="sec_h4">James Anderson</h4></a>
-            <div class="star">
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star-half-o"></i></a>
-            </div>
-        </div>
-    </div>
-    <div class="media testimonial_item">
-        <img class="rounded-circle" src="image/testimonial-3.jpg" alt="Guest Photo">
-        <div class="media-body">
-            <p>"We were impressed by the exceptional service and attention to detail. Our family vacation at Azzaro Resort was memorable and relaxing."</p>
-            <a href="#"><h4 class="sec_h4">Sophia Martinez</h4></a>
-            <div class="star">
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star-o"></i></a>
-            </div>
-        </div>
-    </div>
-    <div class="media testimonial_item">
-        <img class="rounded-circle" src="image/testimonial-4.jpg" alt="Guest Photo">
-        <div class="media-body">
-            <p>"The serene environment and world-class amenities at Azzaro Resort make it a perfect destination for relaxation and rejuvenation."</p>
-            <a href="#"><h4 class="sec_h4">Liam Patel</h4></a>
-            <div class="star">
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star"></i></a>
-                <a href="#"><i class="fa fa-star-half-o"></i></a>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</section>
-<!--================ Testimonial Area  =================-->
+        </section>
+        <!--================Breadcrumb Area =================-->
+
 
 
 <!--================ Latest Blog Area  =================-->
-<section class="latest_blog_area section_gap">
+<!-- <section class="latest_blog_area section_gap">
 <div class="container">
 <div class="section_title text-center">
     <h2 class="title_color">Latest Posts from Our Blog</h2>
@@ -434,7 +666,7 @@
     </div>
 </div>
 </div>
-</section>
+</section> -->
 <!--================ Latest Blog Area  =================-->
 
 
@@ -535,16 +767,17 @@
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="js/jquery-3.2.1.min.js"></script>
-        <script src="js/popper.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
-        <script src="js/jquery.ajaxchimp.min.js"></script>
-        <script src="js/mail-script.js"></script>
-        <script src="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
-        <script src="vendors/nice-select/js/jquery.nice-select.js"></script>
-        <script src="js/mail-script.js"></script>
-        <script src="js/stellar.js"></script>
-        <script src="vendors/lightbox/simpleLightbox.min.js"></script>
-        <script src="js/custom.js"></script>
+<script src="js/popper.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="vendors/bootstrap-datepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="vendors/nice-select/js/jquery.nice-select.js"></script>
+<script src="js/mail-script.js"></script>
+<script src="js/stellar.js"></script>
+<script src="vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
+<script src="vendors/isotope/isotope-min.js"></script>
+<script src="vendors/lightbox/simpleLightbox.min.js"></script>
+<script src="js/custom.js"></script>
     </body>
 </html>

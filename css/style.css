@@ -500,8 +500,8 @@ button:focus {
 }
 
 .banner_area .bg-parallax {
-  background: url("../image/rooms/outdoor_3.jpg") no-repeat scroll center 0/cover;
-  opacity: 0.50;
+  background: url("../image/rooms/outdoor_1.jpg") no-repeat scroll center 0/cover;
+  opacity: 0.80;
 }
 
 .banner_area .position {
