@@ -17,24 +17,24 @@
   --nav-font: "Lato",  sans-serif;
 }
 
-/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+/* Global Colors - Updated with Teal Shades */
 :root {
-  --background-color: #ffffff; /* Background color for the entire website, including individual sections */
-  --default-color: #212529; /* Default color used for the majority of the text content across the entire website */
-  --heading-color: #2d465e; /* Color for headings, subheadings and title throughout the website */
-  --accent-color: #34bf49; /* Accent color that represents your brand on the website. It's used for buttons, links, and other elements that need to stand out */
-  --surface-color: #ffffff; /* The surface color is used as a background of boxed elements within sections, such as cards, icon boxes, or other elements that require a visual separation from the global background. */
-  --contrast-color: #ffffff; /* Contrast color for text, ensuring readability against backgrounds of accent, heading, or default colors. */
+  --background-color: #ffffff; /* Background color for the entire website */
+  --default-color: #212529; /* Default text color */
+  --heading-color: #154a4f; /* Dark teal for headings, extracted from the logo */
+  --accent-color: #1b7a78; /* Teal shade for buttons, links, and brand highlights */
+  --surface-color: #ffffff; /* Background color for boxed elements */
+  --contrast-color: #ffffff; /* Contrast color for better readability */
 }
 
-/* Nav Menu Colors - The following color variables are used specifically for the navigation menu. They are separate from the global colors to allow for more customization options */
+/* Nav Menu Colors - Updated with Teal Shades */
 :root {
-  --nav-color: #212529;  /* The default color of the main navmenu links */
-  --nav-hover-color: #34bf49; /* Applied to main navmenu links when they are hovered over or active */
-  --nav-mobile-background-color: #ffffff; /* Used as the background color for mobile navigation menu */
-  --nav-dropdown-background-color: #ffffff; /* Used as the background color for dropdown items that appear when hovering over primary navigation items */
-  --nav-dropdown-color: #212529; /* Used for navigation links of the dropdown items in the navigation menu. */
-  --nav-dropdown-hover-color: #34bf49; /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --nav-color: #212529;  /* Default nav menu links color */
+  --nav-hover-color: #1b7a78; /* Teal color for hovered or active nav links */
+  --nav-mobile-background-color: #ffffff; /* Background color for mobile nav */
+  --nav-dropdown-background-color: #ffffff; /* Background color for dropdown items */
+  --nav-dropdown-color: #154a4f; /* Teal shade for dropdown links */
+  --nav-dropdown-hover-color: #1b7a78; /* Hover color for dropdown items */
 }
 
 /* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
