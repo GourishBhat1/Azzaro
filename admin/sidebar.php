@@ -1,6 +1,54 @@
 <?php
 // sidebar.php
 ?>
+<style>/* Sidebar Styling */
+.sidebar-nav .nav-item a {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #333; /* Uniform text color */
+  background: transparent; /* Remove unwanted background colors */
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-nav .nav-item a i {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+/* Ensure all items have the same hover effect */
+.sidebar-nav .nav-item a:hover,
+.sidebar-nav .nav-item a.active {
+  background: #f4f4f4; /* Light background on hover */
+  color: #003580; /* Uniform blue color */
+}
+
+/* Submenu items uniform styling */
+.sidebar-nav .nav-content {
+  padding-left: 20px;
+}
+
+.sidebar-nav .nav-content a {
+  padding: 8px 15px;
+  font-size: 13px;
+  color: #555; /* Slightly dimmed */
+  border-radius: 4px;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-nav .nav-content a:hover {
+  color: #003580;
+  background: #f4f4f4;
+}
+
+/* Remove extra bold/blue styling */
+.sidebar-nav .nav-item a.active {
+  font-weight: normal;
+  background: transparent;
+  color: #003580;
+}</style>
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
@@ -22,7 +70,7 @@
       </a>
     </li>
 
-    <!-- User (Customer) Management -->
+    <!-- Customer Management -->
     <li class="nav-item">
       <a class="nav-link" href="user-management.php">
         <i class="bi bi-person-check-fill"></i>
@@ -66,8 +114,8 @@
           </a>
         </li>
         <li>
-          <a href="booking-details.php">
-            <i class="bi bi-circle"></i><span>Booking Details</span>
+          <a href="view-booking.php">
+            <i class="bi bi-circle"></i><span>View Booking</span>
           </a>
         </li>
         <li>
@@ -97,7 +145,7 @@
       </ul>
     </li>
 
-    <!-- Gallery -->
+    <!-- Gallery Management -->
     <li class="nav-item">
       <a class="nav-link" href="gallery-management.php">
         <i class="bi bi-images"></i>
@@ -109,7 +157,7 @@
     <li class="nav-item">
       <a class="nav-link" href="inquiries.php">
         <i class="bi bi-envelope"></i>
-        <span>Inquiries</span>
+        <span>Customer Inquiries</span>
       </a>
     </li>
 

@@ -1,5 +1,13 @@
-<?php include 'header.php'; ?>
-<?php include 'sidebar.php'; ?>
+<?php
+include 'header.php';
+include 'sidebar.php';
+require_once 'connection.php';
+
+// Fetch all customers (only role = 'customer')
+$stmt = $conn->prepare("SELECT user_id, username, email, status FROM users WHERE role = 'customer'");
+$stmt->execute();
+$result = $stmt->get_result();
+?>
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -23,17 +31,26 @@
             </tr>
           </thead>
           <tbody>
-            <!-- Loop: SELECT * FROM users WHERE role='customer' -->
+            <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
-              <td>2</td>
-              <td>john_doe</td>
-              <td>john@example.com</td>
-              <td>Active</td>
+              <td><?= $row['user_id'] ?></td>
+              <td><?= htmlspecialchars($row['username']) ?></td>
+              <td><?= htmlspecialchars($row['email']) ?></td>
               <td>
-                <button class="btn btn-sm btn-primary">View Bookings</button>
-                <button class="btn btn-sm btn-warning">Deactivate</button>
+                <span class="badge <?= ($row['status'] === 'Active') ? 'bg-success' : 'bg-danger' ?>">
+                  <?= $row['status'] ?>
+                </span>
+              </td>
+              <td>
+                <a href="view-user-bookings.php?id=<?= $row['user_id'] ?>" class="btn btn-sm btn-primary">View Bookings</a>
+                <?php if ($row['status'] === 'Active'): ?>
+                  <a href="toggle-user-status.php?id=<?= $row['user_id'] ?>&action=deactivate" class="btn btn-sm btn-warning">Deactivate</a>
+                <?php else: ?>
+                  <a href="toggle-user-status.php?id=<?= $row['user_id'] ?>&action=activate" class="btn btn-sm btn-success">Activate</a>
+                <?php endif; ?>
               </td>
             </tr>
+            <?php endwhile; ?>
           </tbody>
         </table>
       </div>

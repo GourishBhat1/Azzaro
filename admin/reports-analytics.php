@@ -14,21 +14,32 @@
 
   <section class="section dashboard">
     <div class="row">
-      <!-- Place some charts or data tables for revenue reports, booking trends, etc. -->
-      <div class="col-lg-12">
+      <!-- Revenue Chart -->
+      <div class="col-lg-6">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Revenue Reports</h5>
-            <p>Placeholder for charts and data about booking revenue from Razorpay payments, etc.</p>
+            <canvas id="revenueChart"></canvas>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-12 mt-4">
+      <!-- Booking Trends -->
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Booking Trends</h5>
+            <canvas id="bookingTrendsChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Insights -->
+      <div class="col-lg-6 mt-4">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Customer Insights</h5>
-            <p>Placeholder for analytics on returning vs. new customers, top-performing room types, etc.</p>
+            <canvas id="customerInsightsChart"></canvas>
           </div>
         </div>
       </div>
@@ -37,3 +48,54 @@
 </main>
 
 <?php include 'footer.php'; ?>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Fetch analytics data from PHP
+    fetch('reports-data.php')
+        .then(response => response.json())
+        .then(data => {
+            // Revenue Chart
+            new Chart(document.getElementById("revenueChart"), {
+                type: 'line',
+                data: {
+                    labels: data.dates,
+                    datasets: [{
+                        label: 'Total Revenue (₹)',
+                        data: data.revenue,
+                        borderColor: '#1b7a78',
+                        backgroundColor: 'rgba(27, 122, 120, 0.2)',
+                        fill: true
+                    }]
+                }
+            });
+
+            // Booking Trends Chart
+            new Chart(document.getElementById("bookingTrendsChart"), {
+                type: 'bar',
+                data: {
+                    labels: data.room_types,
+                    datasets: [{
+                        label: 'Number of Bookings',
+                        data: data.bookings,
+                        backgroundColor: '#003580'
+                    }]
+                }
+            });
+
+            // Customer Insights Chart
+            new Chart(document.getElementById("customerInsightsChart"), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Returning Customers', 'New Customers'],
+                    datasets: [{
+                        data: data.customers,
+                        backgroundColor: ['#28a745', '#ffc107']
+                    }]
+                }
+            });
+        });
+});
+</script>

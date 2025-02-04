@@ -1,5 +1,6 @@
 <?php include 'header.php'; ?>
 <?php include 'sidebar.php'; ?>
+<?php require_once 'connection.php'; ?>
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -16,6 +17,7 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">All Inquiries</h5>
+
         <table class="table">
           <thead>
             <tr>
@@ -23,15 +25,29 @@
             </tr>
           </thead>
           <tbody>
-            <!-- SELECT * FROM inquiries ORDER BY created_at DESC -->
-            <tr>
-              <td>1</td>
-              <td>Jane Smith</td>
-              <td>jane@example.com</td>
-              <td>Booking Question</td>
-              <td>New</td>
-              <td><button class="btn btn-sm btn-primary">View</button></td>
-            </tr>
+            <?php
+            $stmt = $conn->prepare("SELECT * FROM inquiries ORDER BY created_at DESC");
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+              while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$row['inquiry_id']}</td>
+                        <td>{$row['name']}</td>
+                        <td>{$row['email']}</td>
+                        <td>{$row['subject']}</td>
+                        <td>{$row['status']}</td>
+                        <td>
+                          <a href='view-inquiry.php?id={$row['inquiry_id']}' class='btn btn-sm btn-primary'>View</a>
+                          <a href='delete-inquiry.php?id={$row['inquiry_id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Are you sure?\");'>Delete</a>
+                        </td>
+                      </tr>";
+              }
+            } else {
+              echo "<tr><td colspan='6' class='text-center'>No inquiries found.</td></tr>";
+            }
+            ?>
           </tbody>
         </table>
       </div>
