@@ -89,7 +89,7 @@ require_once 'admin/connection.php';
           Indulge in our thoughtfully designed accommodations, rejuvenating spa treatments, and gourmet dining options. Explore nearby attractions such as Nagoa Beach, Diu Fort, and the iconic INS Khukri Memorial while we take care of every detail to make your stay extraordinary.
         </p>
         <p class="mt-5" data-aos="fade-up">
-          <a href="rooms.html" class="btn btn-get-started">Book Your Stay Now</a>
+          <a href="rooms.php" class="btn btn-get-started">Book Your Stay Now</a>
         </p>
       </div>
     </div>
@@ -109,7 +109,7 @@ require_once 'admin/connection.php';
             <div class="img">
               <img src="assets/img/rooms/outdoor_3.jpg" alt="Azzaro Resort" 
                    class="img-fluid" 
-                   style="max-width: 110%; height: auto; display: block;">
+                   style="max-width: 100%; height: auto; display: block;">
             </div>
           </div>
         </div>
@@ -128,11 +128,11 @@ require_once 'admin/connection.php';
               We are dedicated to crafting unforgettable experiences through our luxurious accommodations, gourmet dining, rejuvenating spa therapies, and curated activities that reflect the vibrant local culture.
             </p>
             <p>
-              <a href="about.html" class="btn-get-started" style="display: inline-block; background-color: #1b7a78; color: #ffffff; border: 2px solid #1b7a78; border-radius: 5px; font-weight: 600; padding: 10px 20px; text-decoration: none; transition: all 0.3s ease-in-out;"
+              <!-- <a href="about.html" class="btn-get-started" style="display: inline-block; background-color: #1b7a78; color: #ffffff; border: 2px solid #1b7a78; border-radius: 5px; font-weight: 600; padding: 10px 20px; text-decoration: none; transition: all 0.3s ease-in-out;"
                  onmouseover="this.style.backgroundColor='#154a4f'; this.style.borderColor='#154a4f';" 
                  onmouseout="this.style.backgroundColor='#1b7a78'; this.style.borderColor='#1b7a78';">
                 Learn More
-              </a>
+              </a> -->
             </p>
           </div>
         </div>
@@ -348,7 +348,6 @@ require_once 'admin/connection.php';
 
 <?php
 
-
 // Fetch Club Royale and Suite rooms from the database
 $query = "SELECT room_id, room_name, description, images FROM rooms WHERE category_id IN 
           (SELECT category_id FROM room_categories WHERE category_name IN ('Suite', 'Club Royale')) LIMIT 2";
@@ -367,9 +366,14 @@ $result = $conn->query($query);
     <div class="row gy-4 justify-content-center">
 
       <?php while ($room = $result->fetch_assoc()): ?>
+        <?php 
+          // Decode JSON images and fetch the first image
+          $image_list = json_decode($room['images'], true);
+          $image_path = (!empty($image_list) && isset($image_list[0])) ? 'admin/' . $image_list[0] : 'assets/img/default-room.jpg';
+        ?>
         <div class="col-md-6 col-lg-5">
           <div class="card shadow-sm border-0 h-100" data-aos="fade-up">
-            <img src="assets/new_img/<?= htmlspecialchars(explode(',', $room['images'])[0]) ?>" 
+            <img src="<?= htmlspecialchars($image_path) ?>" 
                  alt="<?= htmlspecialchars($room['room_name']) ?>" 
                  style="width: 100%; height: 280px; object-fit: cover; border-radius: 5px 5px 0 0;">
             <div class="card-body text-center">
@@ -438,6 +442,7 @@ $result = $conn->query($query);
           </div>
         </a>
       </div>
+      <!-- End Tabs Navigation -->
 
       <!-- Tabs Content -->
       <div class="col-lg-8">
@@ -445,10 +450,10 @@ $result = $conn->query($query);
           <script type="application/json" class="swiper-config">
             {
               "loop": true,
-              "speed": 800,
+              "speed": 1000,
               "autoHeight": true,
               "autoplay": {
-                "delay": 8000
+                "delay": 10000
               },
               "slidesPerView": "auto",
               "pagination": {
@@ -470,41 +475,83 @@ $result = $conn->query($query);
           </script>
           <div class="swiper-wrapper">
 
-            <!-- Slide 1: Restaurant (Carousel with Auto-Scroll) -->
+            <!-- Slide 1: Restaurant (Carousel with auto-scroll) -->
             <div class="swiper-slide">
-              <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+              <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
                 <div class="carousel-inner">
+
+                  <!-- Slide 1 -->
                   <div class="carousel-item active">
-                    <img src="assets/new_img/Opus/Copy of OPUS RESTOBAR.JPG" alt="Opus Restaurant" class="img-fluid">
-                    <div class="carousel-caption d-none d-md-block">
-                      <p>Opus - A multi-cuisine restaurant with global flavors.</p>
+                    <img src="assets/new_img/Opus/Copy of OPUS RESTOBAR.JPG"
+                         alt="Opus Multi-Cuisine Restaurant"
+                         class="img-fluid"
+                         style="width: 100%; height: 400px; object-fit: cover;">
+                    <div class="p-4">
+                      <h3 class="text-black h5 mb-2">Opus</h3>
+                      <p class="mb-0">
+                        A multi-cuisine restaurant with global flavors.
+                      </p>
                     </div>
                   </div>
+
+                  <!-- Slide 2 -->
                   <div class="carousel-item">
-                    <img src="assets/new_img/Kebab/soy 13.JPG" alt="Kebab Specialty Restaurant" class="img-fluid">
-                    <div class="carousel-caption d-none d-md-block">
-                      <p>Kebab - A cozy specialty restaurant offering authentic flavors.</p>
+                    <img src="assets/new_img/Kebab/soy 13.JPG"
+                         alt="Kebab Specialty Restaurant"
+                         class="img-fluid"
+                         style="width: 100%; height: 400px; object-fit: cover;">
+                    <div class="p-4">
+                      <h3 class="text-black h5 mb-2">Kebab</h3>
+                      <p class="mb-0">
+                        A cozy specialty restaurant offering authentic flavors.
+                      </p>
                     </div>
                   </div>
+
+                  <!-- Slide 3 -->
+                  <!-- <div class="carousel-item">
+                    <img src="assets/new_img/Caffina.jpg"
+                         alt="Caffina Coffee Shop"
+                         class="img-fluid"
+                         style="width: 100%; height: 400px; object-fit: cover;">
+                    <div class="p-4">
+                      <h3 class="text-black h5 mb-2">Caffina</h3>
+                      <p class="mb-0">
+                        A coffee shop with aromatic brews and fresh treats.
+                      </p>
+                    </div>
+                  </div> -->
+
+                  <!-- Slide 4 -->
                   <div class="carousel-item">
-                    <img src="assets/new_img/Caffina.jpg" alt="Caffina Coffee Shop" class="img-fluid">
-                    <div class="carousel-caption d-none d-md-block">
-                      <p>Caffina - A coffee shop with aromatic brews and fresh treats.</p>
+                    <img src="assets/new_img/Aquasia/AQUASIA - THE POOL BAR.JPG"
+                         alt="Aquasia Poolside Bar"
+                         class="img-fluid"
+                         style="width: 100%; height: 400px; object-fit: cover;">
+                    <div class="p-4">
+                      <h3 class="text-black h5 mb-2">Aquasia</h3>
+                      <p class="mb-0">
+                        A poolside bar for refreshing drinks and light bites.
+                      </p>
                     </div>
                   </div>
+
+                  <!-- Slide 5 -->
                   <div class="carousel-item">
-                    <img src="assets/new_img/Aquasia/AQUASIA - THE POOL BAR.jpg" alt="Aquasia Poolside Bar" class="img-fluid">
-                    <div class="carousel-caption d-none d-md-block">
-                      <p>Aquasia - A poolside bar for refreshing drinks and light bites.</p>
+                    <img src="assets/new_img/Hi-Spirit/hi - sprit 4.JPG"
+                         alt="Hi-Spirit Bar"
+                         class="img-fluid"
+                         style="width: 100%; height: 400px; object-fit: cover;">
+                    <div class="p-4">
+                      <h3 class="text-black h5 mb-2">Hi-Spirit</h3>
+                      <p class="mb-0">
+                        A refined bar for intimate conversations.
+                      </p>
                     </div>
                   </div>
-                  <div class="carousel-item">
-                    <img src="assets/new_img/Hi-Spirit/hi - sprit 4.JPG" alt="Hi-Spirit Bar" class="img-fluid">
-                    <div class="carousel-caption d-none d-md-block">
-                      <p>Hi-Spirit - A refined bar for intimate conversations.</p>
-                    </div>
-                  </div>
+
                 </div>
+                <!-- Carousel Controls -->
                 <a class="carousel-control-prev" href="#restaurantCarousel" role="button" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 </a>
@@ -513,37 +560,48 @@ $result = $conn->query($query);
                 </a>
               </div>
             </div>
+            <!-- End Slide 1 -->
 
             <!-- Slide 2: Outdoor Play Area -->
             <div class="swiper-slide">
-              <img src="assets/new_img/Outdoor Landscape Shots/Copy of AZR_2794.JPG" alt="Outdoor Play Area" class="img-fluid">
+              <img src="assets/new_img/Outdoor Landscape Shots/Copy of AZR_2794.JPG"
+                   alt="Outdoor Play Area"
+                   class="img-fluid"
+                   style="width: 100%; height: 400px; object-fit: cover;">
               <div class="p-4">
-                <h3 class="text-black h5 mb-3">Outdoor Play Area</h3>
+                <!-- <h3 class="text-black h5 mb-3">Outdoor Play Area</h3>
                 <p>
                   Our outdoor play area is designed for kids and adults alike to engage in fun activities.
-                </p>
+                </p> -->
               </div>
             </div>
+            <!-- End Slide 2 -->
 
             <!-- Slide 3: Swimming Pool -->
             <div class="swiper-slide">
-              <img src="assets/new_img/Pool Shots/Copy of 470A8212.JPG" alt="Swimming Pool" class="img-fluid">
+              <img src="assets/new_img/Pool Shots/Copy of 470A8212.JPG"
+                   alt="Tranquil Swimming Pool"
+                   class="img-fluid"
+                   style="width: 100%; height: 400px; object-fit: cover;">
               <div class="p-4">
-                <h3 class="text-black h5 mb-3">Swimming Pool</h3>
+                <!-- <h3 class="text-black h5 mb-3">Swimming Pool</h3>
                 <p>
                   Take a refreshing dip in our pristine swimming pool, surrounded by lush greenery and serene vibes.
-                </p>
+                </p> -->
               </div>
             </div>
+            <!-- End Slide 3 -->
 
           </div> <!-- End Swiper Wrapper -->
         </div>
-      </div> <!-- End Tabs Content -->
+      </div>
+      <!-- End Tabs Content -->
 
     </div>
   </div>
 </section>
 <!-- /Tabs Section -->
+
 
 
 
@@ -1022,6 +1080,22 @@ $result = $conn->query($query);
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+  let progress = 0;
+  const loaderText = document.getElementById('preloader-percentage');
+
+  const interval = setInterval(() => {
+    progress += 5; // or your actual progress logic
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      // Optionally hide the preloader here
+      // document.getElementById('preloader').style.display = 'none';
+    }
+    loaderText.textContent = progress + '%';
+  }, 300);
+</script>
 
 </body>
 

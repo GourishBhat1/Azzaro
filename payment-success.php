@@ -12,9 +12,6 @@ if (!$payment_id || !$booking_id) {
 
 // ✅ Check if Payment Already Exists
 $check_payment = $conn->prepare("SELECT COUNT(*) FROM payments WHERE razorpay_payment_id = ?");
-if (!$check_payment) {
-    die("DB Error: " . $conn->error);
-}
 $check_payment->bind_param("s", $payment_id);
 $check_payment->execute();
 $check_payment->bind_result($existing_payment_count);
@@ -23,15 +20,12 @@ $check_payment->close();
 
 if ($existing_payment_count > 0) {
     // ✅ Payment already recorded, prevent duplicate entry
-    header("Location: index.php"); // Redirect to home (or any confirmation page)
+    header("Location: index.php");
     exit();
 }
 
 // ✅ Fetch Booking Details
-$stmt = $conn->prepare("SELECT * FROM bookings WHERE booking_id = ?");
-if (!$stmt) {
-    die("DB Error: " . $conn->error);
-}
+$stmt = $conn->prepare("SELECT b.*, u.email FROM bookings b JOIN users u ON b.user_id = u.user_id WHERE b.booking_id = ?");
 $stmt->bind_param("i", $booking_id);
 $stmt->execute();
 $booking = $stmt->get_result()->fetch_assoc();
@@ -50,30 +44,81 @@ $total_amount_inr = $total_amount_paise / 100; // Convert from paise to ₹ INR
 // ✅ Update Payment Status in `bookings`
 $update_payment = "UPDATE bookings SET payment_status = 'Paid' WHERE booking_id = ?";
 $stmt = $conn->prepare($update_payment);
-if (!$stmt) {
-    die("SQL Prepare Error: " . $conn->error);
-}
 $stmt->bind_param("i", $booking_id);
-if (!$stmt->execute()) {
-    die("SQL Execution Error: " . $stmt->error);
-}
+$stmt->execute();
 
 // ✅ Insert Correct Amount into `payments` Table
 $insert_payment = "INSERT INTO payments (booking_id, amount, razorpay_payment_id, status, payment_date) 
                    VALUES (?, ?, ?, 'Success', NOW())";
 $stmt = $conn->prepare($insert_payment);
-if (!$stmt) {
-    die("SQL Prepare Error: " . $conn->error);
-}
 $stmt->bind_param("ids", $booking_id, $total_amount_inr, $payment_id);
-if (!$stmt->execute()) {
-    die("SQL Execution Error: " . $stmt->error);
+$stmt->execute();
+
+// ✅ Generate Unique Verification Code for Admin (MD5 Hash)
+$verification_code = md5($booking_id . $booking['check_in'] . $booking['check_out'] . $payment_id);
+
+// ✅ Send Email Notifications
+$customer_email = $booking['email'];
+$admin_email = "info@azzarodiu.com";
+
+// ✅ Customer Email: Payment Confirmation
+$customer_subject = "Payment Confirmation - Azzaro Resort & Spa";
+$customer_message = "
+<html>
+<head>
+    <title>Payment Confirmation</title>
+</head>
+<body>
+    <h2>Payment Successful!</h2>
+    <p>Dear Guest,</p>
+    <p>Your payment has been successfully received. Below are your booking details:</p>
+    <p><strong>Booking ID:</strong> {$booking_id}</p>
+    <p><strong>Check-In:</strong> {$booking['check_in']}</p>
+    <p><strong>Check-Out:</strong> {$booking['check_out']}</p>
+    <p><strong>Total Paid:</strong> ₹" . number_format($total_amount_inr, 2) . "</p>
+    <p>Your booking confirmation will be sent shortly by the resort.</p>
+    <p>Thank you for choosing Azzaro Resort & Spa!</p>
+</body>
+</html>
+";
+
+// ✅ Admin Email: New Booking Alert
+$admin_subject = "New Booking Received - Azzaro Resort & Spa";
+$admin_message = "
+<html>
+<head>
+    <title>New Booking Notification</title>
+</head>
+<body>
+    <h2>New Booking Alert</h2>
+    <p>A new booking has been made.</p>
+    <p><strong>Booking ID:</strong> {$booking_id}</p>
+    <p><strong>Guest Email:</strong> {$customer_email}</p>
+    <p><strong>Check-In:</strong> {$booking['check_in']}</p>
+    <p><strong>Check-Out:</strong> {$booking['check_out']}</p>
+    <p><strong>Total Paid:</strong> ₹" . number_format($total_amount_inr, 2) . "</p>
+    <p><strong>Verification Code:</strong> {$verification_code}</p>
+    <p>Please verify and confirm the booking.</p>
+</body>
+</html>
+";
+
+// ✅ Function to Send Email
+function sendEmail($to, $subject, $message) {
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: noreply@azzarodiu.com" . "\r\n";
+
+    mail($to, $subject, $message, $headers);
 }
 
-// ✅ Unset Session Variables to Prevent Reprocessing
+// ✅ Send Emails
+sendEmail($customer_email, $customer_subject, $customer_message);
+sendEmail($admin_email, $admin_subject, $admin_message);
+
+// ✅ Unset Session Variables
 unset($_SESSION['booking_id']);
 unset($_SESSION['order_id']);
-
 ?>
 
 <!DOCTYPE html>
@@ -85,6 +130,9 @@ unset($_SESSION['order_id']);
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/css/main.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
 
   <style>
     /* ✅ Preloader Fix */
@@ -136,15 +184,18 @@ unset($_SESSION['order_id']);
       <p class="lead">Thank you for your payment. Your booking is confirmed.</p>
       <p>A confirmation email has been sent to your inbox.</p>
 
-      <div class="border p-3 rounded mt-4">
+      <div class="border p-3 rounded mt-4" id="booking-details">
+        <img src="assets/new_img/azzaro_logo.jpg" width="150" class="mb-3" alt="Azzaro Resort Logo">
         <h5>Booking Details</h5>
         <p><strong>Booking ID:</strong> <?= htmlspecialchars($booking_id) ?></p>
         <p><strong>Check-In:</strong> <?= htmlspecialchars($booking['check_in']) ?></p>
         <p><strong>Check-Out:</strong> <?= htmlspecialchars($booking['check_out']) ?></p>
         <p><strong>Total Paid:</strong> ₹ <?= number_format($total_amount_inr, 2) ?></p>
         <p><strong>Payment ID:</strong> <?= htmlspecialchars($payment_id) ?></p>
+        <p><strong>Verification Code:</strong> <?= $verification_code ?></p>
       </div>
 
+      <button onclick="downloadPDF()" class="btn btn-primary mt-3">Download Receipt</button>
       <a href="index.php" class="btn btn-get-started mt-3">Back to Home</a>
     </div>
   </main>
@@ -165,5 +216,18 @@ unset($_SESSION['order_id']);
   </script>
 
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        html2canvas(document.querySelector("#booking-details")).then(canvas => {
+            const imgData = canvas.toDataURL("image/png");
+            doc.addImage(imgData, "PNG", 10, 10, 190, 0);
+            doc.save("Azzaro_Booking_Receipt.pdf");
+        });
+    }
+  </script>
 </body>
 </html>

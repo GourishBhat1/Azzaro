@@ -20,9 +20,10 @@ if (!$room) {
     exit();
 }
 
-// Fetch room images (Assuming multiple images are stored as comma-separated values)
-$images = explode(',', $room['images']);
+// Fetch room images from JSON format
+$image_list = json_decode($room['images'], true);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,7 +105,6 @@ $images = explode(',', $room['images']);
 
 <!-- Room Details Section -->
 <section id="room-details" class="room-details section">
-
   <div class="container" data-aos="fade-up">
 
     <!-- Room Image Slider -->
@@ -120,11 +120,21 @@ $images = explode(',', $room['images']);
         }
       </script>
       <div class="swiper-wrapper align-items-center">
-        <?php foreach ($images as $image) : ?>
+        <?php
+        if (!empty($image_list)) :
+          foreach ($image_list as $image) :
+            // Ensure correct image path from 'admin/uploads/rooms/'
+            $image_path = 'admin/' . ltrim($image, '/');
+        ?>
           <div class="swiper-slide">
-            <img src="assets/new_img/<?= trim($image) ?>" class="img-fluid rounded" alt="<?= htmlspecialchars($room['room_name']) ?>">
+            <img src="<?= htmlspecialchars($image_path) ?>" class="img-fluid rounded" alt="<?= htmlspecialchars($room['room_name']) ?>">
           </div>
-        <?php endforeach; ?>
+        <?php endforeach; 
+        else: ?>
+          <div class="swiper-slide">
+            <img src="assets/img/default-room.jpg" class="img-fluid rounded" alt="Default Room Image">
+          </div>
+        <?php endif; ?>
       </div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
@@ -138,19 +148,6 @@ $images = explode(',', $room['images']);
         <div class="room-description">
           <h2><?= htmlspecialchars($room['room_name']) ?></h2>
           <p><?= nl2br(htmlspecialchars($room['description'])) ?></p>
-
-          <div class="amenities">
-            <h4>Amenities</h4>
-            <ul class="list-unstyled list-check">
-              <li><i class="bi bi-wifi"></i> Complimentary High-Speed Wi-Fi</li>
-              <li><i class="bi bi-bed"></i> King-Size Bed</li>
-              <li><i class="bi bi-sun"></i> Private Balcony with Views</li>
-              <li><i class="bi bi-tv"></i> Flat-Screen TV with Satellite Channels</li>
-              <li><i class="bi bi-droplet-half"></i> En-suite Bathroom with Premium Toiletries</li>
-              <li><i class="bi bi-concierge-bell"></i> 24/7 Room Service</li>
-              <li><i class="bi bi-cup-hot"></i> Minibar and Coffee/Tea Maker</li>
-            </ul>
-          </div>
         </div>
       </div>
 
@@ -171,9 +168,7 @@ $images = explode(',', $room['images']);
     </div>
 
   </div>
-
 </section><!-- /Room Details Section -->
-
 </main>
 
   <footer id="footer" class="footer light-background">

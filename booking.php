@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'admin/connection.php';
 
 // Get the room ID from URL parameter
@@ -11,11 +12,32 @@ $stmt->bind_param("i", $room_id);
 $stmt->execute();
 $room = $stmt->get_result()->fetch_assoc();
 
-// Redirect to rooms page if room is not found
+// Redirect if room not found
 if (!$room) {
     header("Location: rooms.php");
     exit();
 }
+
+// Fetch booked dates for this room (only confirmed & paid bookings)
+$booked_dates_query = "SELECT check_in, check_out FROM bookings WHERE room_id = ? AND status = 'Confirmed' AND payment_status = 'Paid'";
+$stmt = $conn->prepare($booked_dates_query);
+$stmt->bind_param("i", $room_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Store booked dates in an array
+$booked_dates = [];
+while ($row = $result->fetch_assoc()) {
+    $start = new DateTime($row['check_in']);
+    $end = new DateTime($row['check_out']);
+    while ($start <= $end) {
+        $booked_dates[] = $start->format('Y-m-d');
+        $start->modify('+1 day');
+    }
+}
+
+// Encode booked dates to JSON for JavaScript
+$booked_dates_json = json_encode($booked_dates);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +107,6 @@ if (!$room) {
             <form action="checkout.php" method="POST">
               <input type="hidden" name="room_id" value="<?= $room['room_id'] ?>">
 
-
               <!-- Dates -->
               <div class="row mb-3">
                 <div class="col-md-6">
@@ -127,7 +148,6 @@ if (!$room) {
               <div class="text-center mt-4">
                 <button type="submit" class="btn btn-get-started">Proceed to Checkout</button>
               </div>
-
             </form>
             <!-- /Booking Form -->
           </div>
@@ -157,5 +177,42 @@ if (!$room) {
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const bookedDates = <?= $booked_dates_json ?>;  // Load booked dates from PHP
+
+    function disableBookedDates(inputField) {
+        inputField.addEventListener("input", function () {
+            if (bookedDates.includes(this.value)) {
+                alert("This date is already booked. Please select a different date.");
+                this.value = ""; // Clear selected date
+            }
+        });
+    }
+
+    disableBookedDates(document.getElementById("checkinDate"));
+    disableBookedDates(document.getElementById("checkoutDate"));
+
+    // Ensure check-out date is after check-in date
+    document.getElementById("checkinDate").addEventListener("change", function () {
+        let checkin = new Date(this.value);
+        let checkout = document.getElementById("checkoutDate").value ? new Date(document.getElementById("checkoutDate").value) : null;
+        if (checkout && checkin >= checkout) {
+            alert("Check-out date must be after check-in date.");
+            document.getElementById("checkoutDate").value = "";
+        }
+    });
+
+    document.getElementById("checkoutDate").addEventListener("change", function () {
+        let checkin = new Date(document.getElementById("checkinDate").value);
+        let checkout = new Date(this.value);
+        if (checkin >= checkout) {
+            alert("Check-out date must be after check-in date.");
+            this.value = "";
+        }
+    });
+});
+</script>
 </body>
 </html>

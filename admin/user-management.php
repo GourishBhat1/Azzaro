@@ -4,7 +4,13 @@ include 'sidebar.php';
 require_once 'connection.php';
 
 // Fetch all customers (only role = 'customer')
-$stmt = $conn->prepare("SELECT user_id, username, email, status FROM users WHERE role = 'customer'");
+$query = "SELECT user_id, username, email, role, created_at FROM users WHERE role = 'customer'";
+$stmt = $conn->prepare($query);
+
+if (!$stmt) {
+    die("SQL Error: " . $conn->error);
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
@@ -27,7 +33,12 @@ $result = $stmt->get_result();
         <table class="table">
           <thead>
             <tr>
-              <th>ID</th><th>Username</th><th>Email</th><th>Status</th><th>Actions</th>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Registered On</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -37,17 +48,11 @@ $result = $stmt->get_result();
               <td><?= htmlspecialchars($row['username']) ?></td>
               <td><?= htmlspecialchars($row['email']) ?></td>
               <td>
-                <span class="badge <?= ($row['status'] === 'Active') ? 'bg-success' : 'bg-danger' ?>">
-                  <?= $row['status'] ?>
-                </span>
+                <span class="badge bg-info"><?= ucfirst($row['role']) ?></span>
               </td>
+              <td><?= date("d M Y", strtotime($row['created_at'])) ?></td>
               <td>
                 <a href="view-user-bookings.php?id=<?= $row['user_id'] ?>" class="btn btn-sm btn-primary">View Bookings</a>
-                <?php if ($row['status'] === 'Active'): ?>
-                  <a href="toggle-user-status.php?id=<?= $row['user_id'] ?>&action=deactivate" class="btn btn-sm btn-warning">Deactivate</a>
-                <?php else: ?>
-                  <a href="toggle-user-status.php?id=<?= $row['user_id'] ?>&action=activate" class="btn btn-sm btn-success">Activate</a>
-                <?php endif; ?>
               </td>
             </tr>
             <?php endwhile; ?>

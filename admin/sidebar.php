@@ -94,11 +94,11 @@
             <i class="bi bi-circle"></i><span>Room Categories</span>
           </a>
         </li>
-        <li>
+        <!-- <li>
           <a href="room-pricing.php">
             <i class="bi bi-circle"></i><span>Pricing & Packages</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </li>
 
@@ -113,11 +113,11 @@
             <i class="bi bi-circle"></i><span>Manage Bookings</span>
           </a>
         </li>
-        <li>
+        <!-- <li>
           <a href="view-booking.php">
             <i class="bi bi-circle"></i><span>View Booking</span>
           </a>
-        </li>
+        </li> -->
         <li>
           <a href="booking-calendar.php">
             <i class="bi bi-circle"></i><span>Calendar View</span>
@@ -137,11 +137,11 @@
             <i class="bi bi-circle"></i><span>Payment Tracking</span>
           </a>
         </li>
-        <li>
+        <!-- <li>
           <a href="razorpay-settings.php">
             <i class="bi bi-circle"></i><span>Razorpay Settings</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </li>
 
@@ -162,7 +162,7 @@
     </li>
 
     <!-- Content Management -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#content-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-file-earmark-text"></i><span>Content</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
@@ -183,7 +183,7 @@
           </a>
         </li>
       </ul>
-    </li>
+    </li> -->
 
     <!-- Reports & Analytics -->
     <li class="nav-item">
@@ -194,7 +194,7 @@
     </li>
 
     <!-- Settings -->
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
         <i class="bi bi-gear"></i><span>Settings</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
@@ -210,7 +210,7 @@
           </a>
         </li>
       </ul>
-    </li>
+    </li> -->
 
   </ul>
 

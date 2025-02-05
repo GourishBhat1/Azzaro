@@ -577,6 +577,7 @@ h6 {
   transition: all 0.6s ease-out;
 }
 
+/* The rotating circle spinner */
 #preloader:before {
   content: "";
   position: fixed;
@@ -590,15 +591,30 @@ h6 {
   animation: animate-preloader 1.5s linear infinite;
 }
 
+/* The numeric text in the center */
+#preloader-percentage {
+  position: fixed;
+  /* Place it in the exact center of the screen (matching the spinner) */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Style the text */
+  color: #fff; /* or var(--accent-color) if it contrasts better */
+  font-size: 1rem;
+  font-weight: bold;
+  z-index: 1000000; /* ensure it’s above the spinner */
+}
+
+/* The spinner keyframes */
 @keyframes animate-preloader {
   0% {
     transform: rotate(0deg);
   }
-
   100% {
     transform: rotate(360deg);
   }
 }
+
 
 /*--------------------------------------------------------------
 # Scroll Top Button

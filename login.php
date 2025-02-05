@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h3 class="widget-heading">Navigation</h3>
             <ul class="list-unstyled">
               <li><a href="index.php">Home</a></li>
-              <li><a href="rooms.html">Stays</a></li>
+              <li><a href="rooms.php">Stays</a></li>
               <li><a href="gallery.html">Gallery</a></li>
               <li><a href="contact.html">Contact</a></li>
             </ul>

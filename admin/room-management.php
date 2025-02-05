@@ -29,11 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
 
     if (!empty($room_name) && $category_id > 0) {
         $stmt = $conn->prepare("INSERT INTO rooms (room_name, category_id, price, description, images) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sids", $room_name, $category_id, $price, $description, $images_json);
+        if (!$stmt) {
+            die("Error preparing statement: " . $conn->error);
+        }
+
+        $stmt->bind_param("sidss", $room_name, $category_id, $price, $description, $images_json);
+
         if ($stmt->execute()) {
             echo "<script>alert('Room added successfully'); window.location.href='room-management.php';</script>";
         } else {
-            echo "<script>alert('Error adding room');</script>";
+            echo "<script>alert('Error adding room: " . $stmt->error . "');</script>";
         }
     }
 }
@@ -42,11 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
 if (isset($_GET['delete'])) {
     $room_id = intval($_GET['delete']);
     $stmt = $conn->prepare("DELETE FROM rooms WHERE room_id = ?");
+    if (!$stmt) {
+        die("Error preparing statement: " . $conn->error);
+    }
     $stmt->bind_param("i", $room_id);
     if ($stmt->execute()) {
         echo "<script>alert('Room deleted successfully'); window.location.href='room-management.php';</script>";
     } else {
-        echo "<script>alert('Error deleting room');</script>";
+        echo "<script>alert('Error deleting room: " . $stmt->error . "');</script>";
     }
 }
 

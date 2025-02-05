@@ -112,7 +112,7 @@ while ($row = $result->fetch_assoc()) {
       <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
         <?php foreach ($galleryImages as $image): ?>
           <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-<?= strtolower(str_replace(' ', '-', $image['category'])); ?>">
-            <img src="<?= htmlspecialchars($image['image_path']); ?>" class="img-fluid" alt="<?= ucfirst($image['category']); ?>">
+            <img src="admin/<?= htmlspecialchars($image['image_path']); ?>" class="img-fluid" alt="<?= ucfirst($image['category']); ?>">
           </div>
         <?php endforeach; ?>
       </div><!-- End Portfolio Container -->
