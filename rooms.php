@@ -1,0 +1,349 @@
+<?php
+session_start();
+require_once 'admin/connection.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Stays - Azzaro Resorts & Spas</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+</head>
+
+<body class="blog-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.php" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <img src="assets/new_img/azzaro_logo.jpg" alt="">
+        <!-- <h1 class="sitename">Azzaro Resorts.</h1> -->
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>">Home</a></li>
+          <li><a href="rooms.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'rooms.php' ? 'active' : ''; ?>">Stays</a></li>
+          <li><a href="gallery.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : ''; ?>">Gallery</a></li>
+          <li><a href="contact.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'contact.php' ? 'active' : ''; ?>">Contact</a></li>
+
+          <?php if (isset($_SESSION['user_id'])): ?>
+            <li><a href="dashboard.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">Bookings</a></li>
+            <li><a href="logout.php">Logout</a></li>
+          <?php else: ?>
+            <li><a href="login.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'login.php' ? 'active' : ''; ?>">Login</a></li>
+          <?php endif; ?>
+        </ul>
+        
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Rooms Page Title -->
+<div class="page-title light-background">
+  <div class="container">
+    <h1>Our Stays</h1>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="index.php">Home</a></li>
+        <li class="current">Stays</li>
+      </ol>
+    </nav>
+  </div>
+</div><!-- End Page Title -->
+
+<?php
+
+
+// Fetch Club Royale and Suite rooms from the database
+$query = "SELECT room_id, room_name, description, images FROM rooms WHERE category_id IN 
+          (SELECT category_id FROM room_categories WHERE category_name IN ('Suite', 'Club Royale')) LIMIT 2";
+$result = $conn->query($query);
+?>
+
+<!-- Blog Posts Section -->
+<section id="blog-posts" class="blog-posts section">
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <p>Explore Our Rooms</p>
+    <h2>Accommodations</h2>
+  </div><!-- End Section Title -->
+
+  <div class="container">
+    <div class="row gy-4 justify-content-center">
+
+      <?php while ($room = $result->fetch_assoc()): ?>
+        <div class="col-md-6 col-lg-5">
+          <div class="card shadow-sm border-0 h-100" data-aos="fade-up">
+            <img src="assets/new_img/<?= htmlspecialchars(explode(',', $room['images'])[0]) ?>" 
+                 alt="<?= htmlspecialchars($room['room_name']) ?>" 
+                 style="width: 100%; height: 280px; object-fit: cover; border-radius: 5px 5px 0 0;">
+            <div class="card-body text-center">
+              <h5 class="card-title fw-semibold text-heading"><?= htmlspecialchars($room['room_name']) ?></h5>
+              <p class="card-text text-muted">
+                <?= htmlspecialchars($room['description']) ?>
+              </p>
+              <a href="room_details.php?id=<?= $room['room_id'] ?>" 
+                 style="display: inline-block; background-color: #1b7a78; color: #ffffff; border: 2px solid #1b7a78; border-radius: 5px; font-weight: 600; padding: 10px 20px; text-decoration: none; transition: all 0.3s ease-in-out;"
+                 onmouseover="this.style.backgroundColor='#154a4f'; this.style.borderColor='#154a4f';" 
+                 onmouseout="this.style.backgroundColor='#1b7a78'; this.style.borderColor='#1b7a78';">
+                 Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+      <?php endwhile; ?>
+
+    </div>
+  </div>
+</section>
+<!-- /Blog Posts Section -->
+
+
+  </main>
+
+  <footer id="footer" class="footer light-background">
+    <div class="container">
+      <div class="row g-4">
+        
+        <!-- About Us -->
+        <div class="col-md-6 col-lg-3 mb-3 mb-md-0">
+          <div class="widget">
+            <h3 class="widget-heading">About Us</h3>
+            <p class="mb-4">
+              Escape into luxury at our resort, where relaxation meets nature's finest. Experience unparalleled hospitality and stunning views.
+            </p>
+          </div>
+        </div>
+  
+        <!-- Navigation Links -->
+<div class="col-md-6 col-lg-3 ps-lg-5 mb-3 mb-md-0">
+  <div class="widget">
+    <h3 class="widget-heading">Navigation</h3>
+    <ul class="list-unstyled float-start me-5">
+      <li><a href="index.php">Home</a></li>
+      <li><a href="rooms.php">Stays</a></li>
+      <li><a href="gallery.php">Gallery</a></li>
+    </ul>
+    <ul class="list-unstyled float-start">
+      <li><a href="contact.php">Contact</a></li>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <li><a href="dashboard.php">Bookings</a></li>
+        <li><a href="logout.php">Logout</a></li>
+      <?php else: ?>
+        <li><a href="login.php">Login</a></li>
+      <?php endif; ?>
+    </ul>
+  </div>
+</div>
+
+  
+        <!-- Blog Links -->
+        <div class="col-md-6 col-lg-3 pl-lg-5">
+          <div class="widget">
+            <h3 class="widget-heading">Latest Blogs</h3>
+            <ul class="list-unstyled footer-blog-entry">
+              <li>
+                <a href="https://www.youtube.com/watch?v=Q2gx0cWkpRA&ab_channel=VisitDiu" target="_blank">Visit Diu - A Visual Journey</a>
+              </li>
+              <li>
+                <a href="https://www.mysoultravels.com/india/gujarat/diu-trip/" target="_blank">A Complete Travel Guide to Diu</a>
+              </li>
+              <li>
+                <a href="https://www.diextr.com/diu-the-land-of-surprises/" target="_blank">Diu - The Land of Surprises</a>
+              </li>
+              <li>
+                <a href="https://www.makemytrip.com/tripideas/blog/my-escape-to-diu" target="_blank">My Escape to Diu</a>
+              </li>
+              <li>
+                <a href="https://medium.com/@geethavj176/travel-blog-2024-diu-gir-somnath-d038258690a1" target="_blank">Diu, Gir & Somnath - A Travel Story</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+  
+        <!-- Social Media Links -->
+        <div class="col-md-6 col-lg-3 pl-lg-5">
+          <div class="widget">
+            <h3 class="widget-heading">Connect</h3>
+            <ul class="list-unstyled social-icons light mb-3">
+              <li><a href="https://www.facebook.com/azzaroresorts/" target="_blank"><span class="bi bi-facebook"></span></a></li>
+              <li><a href="https://www.instagram.com/azzaroresorts/" target="_blank"><span class="bi bi-instagram"></span></a></li>
+            </ul>
+          </div>
+        </div>
+  
+      </div>
+  
+      <div class="copyright d-flex flex-column flex-md-row align-items-center justify-content-md-between">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Azzaro Resorts & Spas.</strong> <span>All Rights Reserved.</span></p>
+        <div class="credits">
+          Made by <strong>Gyrono Tech</strong>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+<!-- Floating Contact Button -->
+<div class="floating-contact">
+  <div class="floating-toggle" onclick="toggleContactMenu()">
+    <i class="bi bi-chat-dots"></i> <!-- Main Icon -->
+  </div>
+
+  <!-- Hidden Contact Options -->
+  <div class="contact-options">
+    <!-- WhatsApp -->
+    <a href="https://wa.me/+917201000746?text=Hello!%20I%20would%20like%20to%20know%20more%20about%20Azzaro%20Resorts."
+       target="_blank"
+       class="contact-item whatsapp">
+      <i class="bi bi-whatsapp"></i> Chat
+    </a>
+
+    <!-- Call -->
+    <a href="tel:+917201000746" class="contact-item call">
+      <i class="bi bi-telephone"></i> Call
+    </a>
+  </div>
+</div>
+
+<!-- CSS for Floating Button -->
+<style>
+  /* Floating Button Container */
+  .floating-contact {
+    position: fixed;
+    bottom: 80px; /* Increased from 15px to avoid clash */
+    right: 15px;
+    z-index: 1000;
+  }
+
+  /* Main Toggle Button */
+  .floating-toggle {
+    width: 55px;
+    height: 55px;
+    background-color: #1b7a78;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .floating-toggle:hover {
+    background-color: #154a4f;
+    transform: scale(1.1);
+  }
+
+  /* Contact Options (Initially Hidden) */
+  .contact-options {
+    position: absolute;
+    bottom: 70px;
+    right: 5px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Individual Contact Item */
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #212529;
+    padding: 10px 15px;
+    border-radius: 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .contact-item:hover {
+    transform: scale(1.05);
+  }
+
+  /* WhatsApp Style */
+  .whatsapp {
+    background-color: #25D366;
+    color: white;
+  }
+
+  /* Call Button Style */
+  .call {
+    background-color: #1b7a78;
+    color: white;
+  }
+
+  /* Icon Styling */
+  .contact-item i {
+    font-size: 20px;
+  }
+</style>
+
+<!-- JavaScript to Toggle Contact Options -->
+<script>
+  function toggleContactMenu() {
+    var contactMenu = document.querySelector('.contact-options');
+    if (contactMenu.style.display === "flex") {
+      contactMenu.style.display = "none";
+    } else {
+      contactMenu.style.display = "flex";
+    }
+  }
+</script>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

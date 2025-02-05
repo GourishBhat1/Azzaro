@@ -41,7 +41,7 @@
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="index.php" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <img src="assets/new_img/azzaro_logo.jpg" alt="">
         <!-- <h1 class="sitename">Azzaro Resorts.</h1> -->
@@ -49,7 +49,7 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <!-- <li><a href="about.html">About</a></li> -->
           <li><a href="rooms.html" class="active">Stays</a></li>
           <li><a href="gallery.html">Gallery</a></li>
@@ -88,7 +88,7 @@
     <h1>Room Details</h1>
     <nav class="breadcrumbs">
       <ol>
-        <li><a href="index.html">Home</a></li>
+        <li><a href="index.php">Home</a></li>
         <li><a href="rooms.html">Stays</a></li>
         <li class="current">Room Details</li>
       </ol>
@@ -215,19 +215,26 @@
         </div>
   
         <!-- Navigation Links -->
-        <div class="col-md-6 col-lg-3 ps-lg-5 mb-3 mb-md-0">
-          <div class="widget">
-            <h3 class="widget-heading">Navigation</h3>
-            <ul class="list-unstyled float-start me-5">
-              <li><a href="index.html">Home</a></li>
-              <li><a href="rooms.html">Stays</a></li>
-              <li><a href="gallery.html">Gallery</a></li>
-            </ul>
-            <ul class="list-unstyled float-start">
-              <li><a href="contact.html">Contact</a></li>
-            </ul>
-          </div>
-        </div>
+<div class="col-md-6 col-lg-3 ps-lg-5 mb-3 mb-md-0">
+  <div class="widget">
+    <h3 class="widget-heading">Navigation</h3>
+    <ul class="list-unstyled float-start me-5">
+      <li><a href="index.php">Home</a></li>
+      <li><a href="rooms.php">Stays</a></li>
+      <li><a href="gallery.php">Gallery</a></li>
+    </ul>
+    <ul class="list-unstyled float-start">
+      <li><a href="contact.php">Contact</a></li>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <li><a href="dashboard.php">Bookings</a></li>
+        <li><a href="logout.php">Logout</a></li>
+      <?php else: ?>
+        <li><a href="login.php">Login</a></li>
+      <?php endif; ?>
+    </ul>
+  </div>
+</div>
+
   
         <!-- Blog Links -->
         <div class="col-md-6 col-lg-3 pl-lg-5">
@@ -258,8 +265,8 @@
           <div class="widget">
             <h3 class="widget-heading">Connect</h3>
             <ul class="list-unstyled social-icons light mb-3">
-              <li><a href="#"><span class="bi bi-facebook"></span></a></li>
-              <li><a href="#"><span class="bi bi-instagram"></span></a></li>
+              <li><a href="https://www.facebook.com/azzaroresorts/" target="_blank"><span class="bi bi-facebook"></span></a></li>
+              <li><a href="https://www.instagram.com/azzaroresorts/" target="_blank"><span class="bi bi-instagram"></span></a></li>
             </ul>
           </div>
         </div>
