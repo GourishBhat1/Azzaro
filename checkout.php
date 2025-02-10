@@ -27,8 +27,8 @@ if (!$room_id || !$checkin || !$checkout || !$fullName || !$email || !$phone) {
     die("Error: Missing required booking information.");
 }
 
-// ✅ Fetch Room Details
-$stmt = $conn->prepare("SELECT room_name, price FROM rooms WHERE room_id = ?");
+// ✅ Fetch Room Details including GST Rate
+$stmt = $conn->prepare("SELECT room_name, price, gst_rate FROM rooms WHERE room_id = ?");
 if (!$stmt) {
     die("DB Error: " . $conn->error);
 }
@@ -39,11 +39,13 @@ if (!$room) {
     die("Error: Invalid room selection.");
 }
 
-// ✅ Calculate Total Price
+// ✅ Calculate Total Price including GST
 $checkin_date = new DateTime($checkin);
 $checkout_date = new DateTime($checkout);
 $nights = $checkin_date->diff($checkout_date)->days;
-$total_price = $nights * $room['price'] * 100; // Convert to paise for Razorpay
+$base_price = $nights * $room['price'];
+$gst_amount = ($base_price * $room['gst_rate']) / 100;
+$total_price = ($base_price + $gst_amount) * 100; // Convert to paise for Razorpay
 
 // ✅ Insert Booking into Database
 $insert_query = "INSERT INTO bookings (user_id, room_id, check_in, check_out, status, payment_status, payment_amount) 
@@ -103,16 +105,16 @@ $_SESSION['order_id'] = $order_id;
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>">Home</a></li>
-          <li><a href="rooms.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'rooms.php' ? 'active' : ''; ?>">Stays</a></li>
-          <li><a href="gallery.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : ''; ?>">Gallery</a></li>
-          <li><a href="contact.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'contact.php' ? 'active' : ''; ?>">Contact</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="rooms.php">Stays</a></li>
+          <li><a href="gallery.php">Gallery</a></li>
+          <li><a href="contact.php">Contact</a></li>
 
           <?php if (isset($_SESSION['user_id'])): ?>
-            <li><a href="dashboard.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">Bookings</a></li>
+            <li><a href="dashboard.php">Bookings</a></li>
             <li><a href="logout.php">Logout</a></li>
           <?php else: ?>
-            <li><a href="login.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'login.php' ? 'active' : ''; ?>">Login</a></li>
+            <li><a href="login.php">Login</a></li>
           <?php endif; ?>
         </ul>
         
@@ -137,17 +139,15 @@ $_SESSION['order_id'] = $order_id;
               <p><strong>Name:</strong> <?= htmlspecialchars($fullName) ?><br>
                  <strong>Email:</strong> <?= htmlspecialchars($email) ?><br>
                  <strong>Phone:</strong> <?= htmlspecialchars($phone) ?></p>
-              <h6>Total Cost: <span class="text-primary">₹ <?= number_format($total_price / 100, 2) ?></span></h6>
+              <h6>Base Price: ₹ <?= number_format($base_price, 2) ?></h6>
+              <h6>GST (<?= $room['gst_rate'] ?>%): ₹ <?= number_format($gst_amount, 2) ?></h6>
+              <h5>Total Cost: <span class="text-primary">₹ <?= number_format($total_price / 100, 2) ?></span></h5>
             </div>
 
             <!-- Razorpay Payment -->
             <div class="text-center">
               <p class="mb-3">Proceed to pay securely via Razorpay.</p>
-              <button id="payBtn" class="btn btn-get-started">Pay with Razorpay</button>
-            </div>
-
-            <div class="mt-3 text-center">
-              <a href="booking.php?id=<?= $booking_id ?>" class="btn btn-link">Edit Booking</a>
+              <button id="payBtn" class="btn btn-success btn-block">Pay with Razorpay</button>
             </div>
 
           </div>
@@ -186,22 +186,11 @@ $_SESSION['order_id'] = $order_id;
     };
   </script>
 
-  <!-- ✅ Fix Preloader Issue -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("preloader").style.display = "none";
-    });
-  </script>
-
   <footer id="footer" class="footer light-background">
     <div class="container">
       <p>© 2025 Azzaro Resorts & Spa. All Rights Reserved.</p>
     </div>
   </footer>
 
-  <a href="#" class="scroll-top"><i class="bi bi-arrow-up-short"></i></a>
-  <div id="preloader"></div>
-
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -8,19 +8,53 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $subject = trim($_POST["subject"]);
     $message = trim($_POST["message"]);
 
-    // Insert data into inquiries table
+    // ✅ Insert inquiry into database
     $stmt = $conn->prepare("INSERT INTO inquiries (name, email, subject, message) VALUES (?, ?, ?, ?)");
     if ($stmt) {
         $stmt->bind_param("ssss", $name, $email, $subject, $message);
         $stmt->execute();
         $stmt->close();
+
+        // ✅ Send notification email to admin
+        sendInquiryEmail($name, $email, $subject, $message);
     }
 
-    // Redirect back with success or error message
+    // ✅ Redirect back with success message
     header("Location: contact.php?status=success");
     exit();
 }
+
+// ✅ Function to send inquiry notification email to staff
+function sendInquiryEmail($name, $email, $subject, $message) {
+    $admin_email = "info@azzarodiu.com";
+    $email_subject = "New Customer Inquiry - Azzaro Resorts";
+    
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8" . "\r\n";
+    $headers .= "From: Azzaro Resorts <no-reply@azzarodiu.com>" . "\r\n";
+
+    $email_body = "
+    <html>
+    <head>
+        <title>New Customer Inquiry</title>
+    </head>
+    <body>
+        <h2>New Customer Inquiry Received</h2>
+        <p><strong>Name:</strong> $name</p>
+        <p><strong>Email:</strong> <a href='mailto:$email'>$email</a></p>
+        <p><strong>Subject:</strong> $subject</p>
+        <p><strong>Message:</strong></p>
+        <p>$message</p>
+        <br>
+        <p><i>This is an automated email. Please do not reply directly.</i></p>
+    </body>
+    </html>";
+
+    // ✅ Send email
+    mail($admin_email, $email_subject, $email_body, $headers);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

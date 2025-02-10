@@ -432,6 +432,17 @@ $result = $conn->query($query);
         </a>
         <a href="#" class="service-item link horizontal d-flex" data-aos="fade-left" data-aos-delay="200">
           <div class="service-icon color-3 mb-4">
+            <i class="bi bi-flower1"></i>
+          </div>
+          <div class="service-contents">
+            <h3>Spa</h3>
+            <p>
+            A tranquil retreat for relaxation and renewal with expert massages, facials, and wellness therapies.
+            </p>
+          </div>
+        </a>
+        <a href="#" class="service-item link horizontal d-flex" data-aos="fade-left" data-aos-delay="300">
+          <div class="service-icon color-3 mb-4">
             <i class="bi bi-water"></i>
           </div>
           <div class="service-contents">
@@ -510,12 +521,12 @@ $result = $conn->query($query);
 
                   <!-- Slide 3 -->
                   <!-- <div class="carousel-item">
-                    <img src="assets/new_img/Caffina.jpg"
-                         alt="Caffina Coffee Shop"
+                    <img src="assets/new_img/Spa/IMG_4121.JPG"
+                         alt="Nilaya Spa"
                          class="img-fluid"
                          style="width: 100%; height: 400px; object-fit: cover;">
                     <div class="p-4">
-                      <h3 class="text-black h5 mb-2">Caffina</h3>
+                      <h3 class="text-black h5 mb-2">Spa</h3>
                       <p class="mb-0">
                         A coffee shop with aromatic brews and fresh treats.
                       </p>
@@ -576,6 +587,19 @@ $result = $conn->query($query);
               </div>
             </div>
             <!-- End Slide 2 -->
+
+            <div class="swiper-slide">
+              <img src="assets/new_img/Spa/IMG_4121.JPG"
+                   alt="Nilaya Spa"
+                   class="img-fluid"
+                   style="width: 100%; height: 400px; object-fit: cover;">
+              <div class="p-4">
+                <!-- <h3 class="text-black h5 mb-3">Swimming Pool</h3>
+                <p>
+                  Take a refreshing dip in our pristine swimming pool, surrounded by lush greenery and serene vibes.
+                </p> -->
+              </div>
+            </div>
 
             <!-- Slide 3: Swimming Pool -->
             <div class="swiper-slide">

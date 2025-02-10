@@ -24,8 +24,14 @@ if ($existing_payment_count > 0) {
     exit();
 }
 
-// ✅ Fetch Booking Details
-$stmt = $conn->prepare("SELECT b.*, u.email FROM bookings b JOIN users u ON b.user_id = u.user_id WHERE b.booking_id = ?");
+// ✅ Fetch Booking Details with GST Rate
+$stmt = $conn->prepare("
+    SELECT b.*, u.email, r.room_name, r.price, r.gst_rate 
+    FROM bookings b
+    JOIN users u ON b.user_id = u.user_id
+    JOIN rooms r ON b.room_id = r.room_id
+    WHERE b.booking_id = ?
+");
 $stmt->bind_param("i", $booking_id);
 $stmt->execute();
 $booking = $stmt->get_result()->fetch_assoc();
@@ -41,80 +47,25 @@ if (!$total_amount_paise) {
 }
 $total_amount_inr = $total_amount_paise / 100; // Convert from paise to ₹ INR
 
+// ✅ Calculate Base Price and GST
+$base_price = ($total_amount_inr * 100) / (100 + $booking['gst_rate']); // Reverse calculation
+$gst_amount = $total_amount_inr - $base_price;
+
 // ✅ Update Payment Status in `bookings`
 $update_payment = "UPDATE bookings SET payment_status = 'Paid' WHERE booking_id = ?";
 $stmt = $conn->prepare($update_payment);
 $stmt->bind_param("i", $booking_id);
 $stmt->execute();
 
-// ✅ Insert Correct Amount into `payments` Table
+// ✅ Insert Payment Record
 $insert_payment = "INSERT INTO payments (booking_id, amount, razorpay_payment_id, status, payment_date) 
                    VALUES (?, ?, ?, 'Success', NOW())";
 $stmt = $conn->prepare($insert_payment);
 $stmt->bind_param("ids", $booking_id, $total_amount_inr, $payment_id);
 $stmt->execute();
 
-// ✅ Generate Unique Verification Code for Admin (MD5 Hash)
+// ✅ Generate Unique Verification Code for Admin
 $verification_code = md5($booking_id . $booking['check_in'] . $booking['check_out'] . $payment_id);
-
-// ✅ Send Email Notifications
-$customer_email = $booking['email'];
-$admin_email = "info@azzarodiu.com";
-
-// ✅ Customer Email: Payment Confirmation
-$customer_subject = "Payment Confirmation - Azzaro Resort & Spa";
-$customer_message = "
-<html>
-<head>
-    <title>Payment Confirmation</title>
-</head>
-<body>
-    <h2>Payment Successful!</h2>
-    <p>Dear Guest,</p>
-    <p>Your payment has been successfully received. Below are your booking details:</p>
-    <p><strong>Booking ID:</strong> {$booking_id}</p>
-    <p><strong>Check-In:</strong> {$booking['check_in']}</p>
-    <p><strong>Check-Out:</strong> {$booking['check_out']}</p>
-    <p><strong>Total Paid:</strong> ₹" . number_format($total_amount_inr, 2) . "</p>
-    <p>Your booking confirmation will be sent shortly by the resort.</p>
-    <p>Thank you for choosing Azzaro Resort & Spa!</p>
-</body>
-</html>
-";
-
-// ✅ Admin Email: New Booking Alert
-$admin_subject = "New Booking Received - Azzaro Resort & Spa";
-$admin_message = "
-<html>
-<head>
-    <title>New Booking Notification</title>
-</head>
-<body>
-    <h2>New Booking Alert</h2>
-    <p>A new booking has been made.</p>
-    <p><strong>Booking ID:</strong> {$booking_id}</p>
-    <p><strong>Guest Email:</strong> {$customer_email}</p>
-    <p><strong>Check-In:</strong> {$booking['check_in']}</p>
-    <p><strong>Check-Out:</strong> {$booking['check_out']}</p>
-    <p><strong>Total Paid:</strong> ₹" . number_format($total_amount_inr, 2) . "</p>
-    <p><strong>Verification Code:</strong> {$verification_code}</p>
-    <p>Please verify and confirm the booking.</p>
-</body>
-</html>
-";
-
-// ✅ Function to Send Email
-function sendEmail($to, $subject, $message) {
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: noreply@azzarodiu.com" . "\r\n";
-
-    mail($to, $subject, $message, $headers);
-}
-
-// ✅ Send Emails
-sendEmail($customer_email, $customer_subject, $customer_message);
-sendEmail($admin_email, $admin_subject, $admin_message);
 
 // ✅ Unset Session Variables
 unset($_SESSION['booking_id']);
@@ -160,16 +111,16 @@ unset($_SESSION['order_id']);
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : ''; ?>">Home</a></li>
-          <li><a href="rooms.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'rooms.php' ? 'active' : ''; ?>">Stays</a></li>
-          <li><a href="gallery.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'gallery.php' ? 'active' : ''; ?>">Gallery</a></li>
-          <li><a href="contact.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'contact.php' ? 'active' : ''; ?>">Contact</a></li>
+          <li><a href="index.php">Home</a></li>
+          <li><a href="rooms.php">Stays</a></li>
+          <li><a href="gallery.php">Gallery</a></li>
+          <li><a href="contact.php">Contact</a></li>
 
           <?php if (isset($_SESSION['user_id'])): ?>
-            <li><a href="dashboard.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>">Bookings</a></li>
+            <li><a href="dashboard.php">Bookings</a></li>
             <li><a href="logout.php">Logout</a></li>
           <?php else: ?>
-            <li><a href="login.php" class="<?php echo basename($_SERVER['PHP_SELF']) == 'login.php' ? 'active' : ''; ?>">Login</a></li>
+            <li><a href="login.php">Login</a></li>
           <?php endif; ?>
         </ul>
         
@@ -180,19 +131,21 @@ unset($_SESSION['order_id']);
 
   <main class="main py-5">
     <div class="container text-center">
-      <h2 class="text-success mb-3">Payment Successful!</h2>
-      <p class="lead">Thank you for your payment. Your booking is confirmed.</p>
-      <p>A confirmation email has been sent to your inbox.</p>
-
       <div class="border p-3 rounded mt-4" id="booking-details">
         <img src="assets/new_img/azzaro_logo.jpg" width="150" class="mb-3" alt="Azzaro Resort Logo">
+        <h2 class="text-success mb-3">Payment Successful!</h2>
+        <p class="lead">Thank you for your payment. Your booking request has been received.</p>
+        
         <h5>Booking Details</h5>
         <p><strong>Booking ID:</strong> <?= htmlspecialchars($booking_id) ?></p>
+        <p><strong>Room:</strong> <?= htmlspecialchars($booking['room_name']) ?></p>
         <p><strong>Check-In:</strong> <?= htmlspecialchars($booking['check_in']) ?></p>
         <p><strong>Check-Out:</strong> <?= htmlspecialchars($booking['check_out']) ?></p>
-        <p><strong>Total Paid:</strong> ₹ <?= number_format($total_amount_inr, 2) ?></p>
+        <h6>Base Price: ₹ <?= number_format($base_price, 2) ?></h6>
+        <h6>GST (<?= $booking['gst_rate'] ?>%): ₹ <?= number_format($gst_amount, 2) ?></h6>
+        <h5>Total Paid: <span class="text-primary">₹ <?= number_format($total_amount_inr, 2) ?></span></h5>
         <p><strong>Payment ID:</strong> <?= htmlspecialchars($payment_id) ?></p>
-        <p><strong>Verification Code:</strong> <?= $verification_code ?></p>
+        <p>Your booking confirmation email will be sent shortly.</p>
       </div>
 
       <button onclick="downloadPDF()" class="btn btn-primary mt-3">Download Receipt</button>
@@ -219,15 +172,26 @@ unset($_SESSION['order_id']);
 
   <script>
     function downloadPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        html2canvas(document.querySelector("#booking-details")).then(canvas => {
-            const imgData = canvas.toDataURL("image/png");
-            doc.addImage(imgData, "PNG", 10, 10, 190, 0);
-            doc.save("Azzaro_Booking_Receipt.pdf");
-        });
-    }
-  </script>
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4'); // Standard A4 PDF
+
+    let element = document.querySelector("#booking-details"); // Target the entire receipt section
+
+    // ✅ Use html2canvas with higher scale for better clarity
+    html2canvas(element, { scale: 3, useCORS: true }).then(canvas => {
+        let imgData = canvas.toDataURL("image/png");
+        let imgWidth = 190; // Scale image width to fit within A4
+        let imgHeight = (canvas.height * imgWidth) / canvas.width; // Maintain aspect ratio
+
+        doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight); // Add image to PDF
+        doc.save("Azzaro_Booking_Receipt.pdf"); // Download PDF
+    }).catch(error => {
+        console.error("PDF Generation Error:", error);
+        alert("Error generating PDF. Please try again.");
+    });
+}
+
+</script>
+
 </body>
 </html>

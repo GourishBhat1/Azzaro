@@ -3,14 +3,16 @@ include 'header.php';
 include 'sidebar.php';
 require_once 'connection.php';
 
-// Handle form submission for adding a new room
+// ✅ Handle form submission for adding a new room
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
     $room_name = trim($_POST['room_name']);
     $category_id = intval($_POST['category_id']);
     $price = floatval($_POST['price']);
+    $gst_rate = floatval($_POST['gst_rate']);
+    $inventory = intval($_POST['inventory']);
     $description = trim($_POST['description']);
 
-    // Handle file upload
+    // ✅ Handle file upload
     $image_paths = [];
     if (!empty($_FILES['room_images']['name'][0])) {
         $upload_dir = 'uploads/rooms/';
@@ -28,12 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
     $images_json = !empty($image_paths) ? json_encode($image_paths) : '';
 
     if (!empty($room_name) && $category_id > 0) {
-        $stmt = $conn->prepare("INSERT INTO rooms (room_name, category_id, price, description, images) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO rooms (room_name, category_id, price, gst_rate, inventory, description, images) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)");
         if (!$stmt) {
             die("Error preparing statement: " . $conn->error);
         }
 
-        $stmt->bind_param("sidss", $room_name, $category_id, $price, $description, $images_json);
+        $stmt->bind_param("siddiss", $room_name, $category_id, $price, $gst_rate, $inventory, $description, $images_json);
 
         if ($stmt->execute()) {
             echo "<script>alert('Room added successfully'); window.location.href='room-management.php';</script>";
@@ -43,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
     }
 }
 
-// Handle room deletion
+// ✅ Handle room deletion
 if (isset($_GET['delete'])) {
     $room_id = intval($_GET['delete']);
     $stmt = $conn->prepare("DELETE FROM rooms WHERE room_id = ?");
@@ -58,10 +61,13 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// Fetch all rooms
-$rooms = $conn->query("SELECT r.room_id, r.room_name, c.category_name, r.price, r.images FROM rooms r JOIN room_categories c ON r.category_id = c.category_id ORDER BY r.room_id ASC");
+// ✅ Fetch all rooms
+$rooms = $conn->query("SELECT r.room_id, r.room_name, c.category_name, r.price, r.gst_rate, r.inventory, r.images 
+                       FROM rooms r 
+                       JOIN room_categories c ON r.category_id = c.category_id 
+                       ORDER BY r.room_id ASC");
 
-// Fetch all room categories for dropdown
+// ✅ Fetch all room categories for dropdown
 $categories = $conn->query("SELECT * FROM room_categories ORDER BY category_id ASC");
 ?>
 
@@ -89,6 +95,8 @@ $categories = $conn->query("SELECT * FROM room_categories ORDER BY category_id A
               <th>Room Name</th>
               <th>Category</th>
               <th>Price</th>
+              <th>GST</th>
+              <th>Inventory</th>
               <th>Images</th>
               <th>Actions</th>
             </tr>
@@ -100,6 +108,8 @@ $categories = $conn->query("SELECT * FROM room_categories ORDER BY category_id A
               <td><?= htmlspecialchars($room['room_name']) ?></td>
               <td><?= htmlspecialchars($room['category_name']) ?></td>
               <td>Rs. <?= number_format($room['price'], 2) ?></td>
+              <td><?= number_format($room['gst_rate'], 2) ?>%</td>
+              <td><?= $room['inventory'] ?></td>
               <td>
                 <?php
                 $image_list = json_decode($room['images'], true);
@@ -135,6 +145,14 @@ $categories = $conn->query("SELECT * FROM room_categories ORDER BY category_id A
           <div class="mb-3">
             <label class="form-label">Price</label>
             <input type="number" step="0.01" class="form-control" name="price" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">GST (%)</label>
+            <input type="number" step="0.01" class="form-control" name="gst_rate" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Available Rooms (Inventory)</label>
+            <input type="number" class="form-control" name="inventory" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Description</label>

@@ -78,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" class="form-control" id="password" name="password" required />
       </div>
       <button type="submit" class="btn btn-primary">Login</button>
-      <a href="forgot-password.php" class="d-block mt-2">Forgot Password?</a>
     </form>
   </div>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

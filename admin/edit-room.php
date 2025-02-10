@@ -3,37 +3,39 @@ include 'header.php';
 include 'sidebar.php';
 require_once 'connection.php';
 
-// Validate Room ID
+// ✅ Validate Room ID
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: room-management.php");
     exit();
 }
 $room_id = intval($_GET['id']);
 
-// Fetch room details
+// ✅ Fetch room details
 $stmt = $conn->prepare("SELECT * FROM rooms WHERE room_id = ?");
 $stmt->bind_param("i", $room_id);
 $stmt->execute();
 $room = $stmt->get_result()->fetch_assoc();
 
-// Fetch all categories for dropdown
+// ✅ Fetch all categories for dropdown
 $categories = $conn->query("SELECT * FROM room_categories ORDER BY category_id ASC");
 
-// Handle room update
+// ✅ Handle room update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_room'])) {
     $room_name = trim($_POST['room_name']);
     $category_id = intval($_POST['category_id']);
     $price = floatval($_POST['price']);
+    $gst_rate = floatval($_POST['gst_rate']);
+    $inventory = intval($_POST['inventory']);
     $description = trim($_POST['description']);
 
-    // Delete old images if new ones are uploaded
+    // ✅ Delete old images if new ones are uploaded
     if (!empty($_FILES['room_images']['name'][0])) {
         // Remove old images from the server
         $old_images = json_decode($room['images'], true);
         if (!empty($old_images)) {
             foreach ($old_images as $old_image) {
                 if (file_exists($old_image)) {
-                    unlink($old_image); // Delete old file
+                    unlink($old_image);
                 }
             }
         }
@@ -56,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_room'])) {
         $images_json = $room['images']; // Keep old images if no new ones are uploaded
     }
 
-    // Update room details
-    $update_stmt = $conn->prepare("UPDATE rooms SET room_name = ?, category_id = ?, price = ?, description = ?, images = ? WHERE room_id = ?");
-    $update_stmt->bind_param("sidssi", $room_name, $category_id, $price, $description, $images_json, $room_id);
+    // ✅ Update room details
+    $update_stmt = $conn->prepare("UPDATE rooms SET room_name = ?, category_id = ?, price = ?, gst_rate = ?, inventory = ?, description = ?, images = ? WHERE room_id = ?");
+    $update_stmt->bind_param("siddissi", $room_name, $category_id, $price, $gst_rate, $inventory, $description, $images_json, $room_id);
     
     if ($update_stmt->execute()) {
         echo "<script>alert('Room updated successfully'); window.location.href='room-management.php';</script>";
@@ -95,6 +97,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_room'])) {
           <div class="mb-3">
             <label class="form-label">Price</label>
             <input type="number" step="0.01" class="form-control" name="price" value="<?= number_format($room['price'], 2, '.', '') ?>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">GST Rate (%)</label>
+            <input type="number" step="0.01" class="form-control" name="gst_rate" value="<?= number_format($room['gst_rate'], 2, '.', '') ?>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Available Rooms (Inventory)</label>
+            <input type="number" class="form-control" name="inventory" value="<?= intval($room['inventory']) ?>" required>
           </div>
           <div class="mb-3">
             <label class="form-label">Description</label>
