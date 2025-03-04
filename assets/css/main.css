@@ -10,16 +10,25 @@
 # Font & Color Variables
 # Help: https://bootstrapmade.com/color-system/
 --------------------------------------------------------------*/
+
+/* @font-face {
+  font-family: "Seasons";
+  src: url("../fonts/seasons/Fontspring-DEMO-theseasons-reg.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+} */
+
+
 /* Fonts */
 :root {
-  --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --heading-font: "Roboto",  sans-serif;
+  --default-font: "Lora",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-font: "Lora",  sans-serif;
   --nav-font: "Lato",  sans-serif;
 }
 
 /* Global Colors - Updated with Teal Shades */
 :root {
-  --background-color: #ffffff; /* Background color for the entire website */
+  --background-color: #fefcf6; /* Background color for the entire website */
   --default-color: #212529; /* Default text color */
   --heading-color: #154a4f; /* Dark teal for headings, extracted from the logo */
   --accent-color: #1b7a78; /* Teal shade for buttons, links, and brand highlights */
