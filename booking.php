@@ -91,7 +91,7 @@ if (isset($_SESSION['user_id'])) {
 <header id="header" class="header d-flex align-items-center sticky-top">
   <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
     <a href="index.php" class="logo d-flex align-items-center">
-      <img src="assets/new_img/azzaro_logo.jpg" alt="Azzaro Logo">
+      <img src="assets/new_img/azzaro_logo.png" alt="Azzaro Logo">
     </a>
     <nav id="navmenu" class="navmenu">
       <ul>

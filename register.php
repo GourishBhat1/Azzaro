@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo d-flex align-items-center">
-        <img src="assets/new_img/azzaro_logo.jpg" alt="">
+        <img src="assets/new_img/azzaro_logo.png" alt="">
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>

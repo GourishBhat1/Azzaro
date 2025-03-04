@@ -36,7 +36,7 @@ require_once 'admin/connection.php';
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
       <a href="index.php" class="logo d-flex align-items-center">
-        <img src="assets/new_img/azzaro_logo.jpg" alt="">
+        <img src="assets/new_img/azzaro_logo.png" alt="">
       </a>
 
       <nav id="navmenu" class="navmenu">

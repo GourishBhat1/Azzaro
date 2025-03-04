@@ -107,7 +107,7 @@ unset($_SESSION['order_id']);
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo">
-        <img src="assets/new_img/azzaro_logo.jpg" alt="">
+        <img src="assets/new_img/azzaro_logo.png" alt="">
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
@@ -132,7 +132,7 @@ unset($_SESSION['order_id']);
   <main class="main py-5">
     <div class="container text-center">
       <div class="border p-3 rounded mt-4" id="booking-details">
-        <img src="assets/new_img/azzaro_logo.jpg" width="150" class="mb-3" alt="Azzaro Resort Logo">
+        <img src="assets/new_img/azzaro_logo.png" width="150" class="mb-3" alt="Azzaro Resort Logo">
         <h2 class="text-success mb-3">Payment Successful!</h2>
         <p class="lead">Thank you for your payment. Your booking request has been received.</p>
         

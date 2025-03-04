@@ -62,7 +62,7 @@ $image_list = json_decode($room['images'], true);
 
       <a href="index.php" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="assets/new_img/azzaro_logo.jpg" alt="">
+        <img src="assets/new_img/azzaro_logo.png" alt="">
         <!-- <h1 class="sitename">Azzaro Resorts.</h1> -->
       </a>
 

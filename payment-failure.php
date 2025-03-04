@@ -33,7 +33,7 @@ if (!$booking) {
 <body>
   <header id="header" class="header sticky-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-      <a href="index.php" class="logo"><img src="assets/new_img/azzaro_logo.jpg" alt="Azzaro"></a>
+      <a href="index.php" class="logo"><img src="assets/new_img/azzaro_logo.png" alt="Azzaro"></a>
     </div>
   </header>
 

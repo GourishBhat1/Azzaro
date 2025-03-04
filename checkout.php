@@ -101,7 +101,7 @@ $_SESSION['order_id'] = $order_id;
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
       <a href="index.php" class="logo d-flex align-items-center">
-        <img src="assets/new_img/azzaro_logo.jpg" alt="Azzaro Logo">
+        <img src="assets/new_img/azzaro_logo.png" alt="Azzaro Logo">
       </a>
       <nav id="navmenu" class="navmenu">
         <ul>
@@ -165,7 +165,7 @@ $_SESSION['order_id'] = $order_id;
         "currency": "INR",
         "name": "Azzaro Resort",
         "description": "Room Booking Payment",
-        "image": "assets/new_img/azzaro_logo.jpg",
+        "image": "assets/new_img/azzaro_logo.png",
         "order_id": "<?= $order_id ?>",
         "handler": function (response) {
             window.location.href = "payment-success.php?payment_id=" + response.razorpay_payment_id + "&booking_id=<?= $booking_id ?>";
